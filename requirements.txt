@@ -1,1 +1,7 @@
 xmltodict
+pandas
+numpy
+beautifulsoup4
+lxml
+elasticsearch==7.10.1
+ftfy
