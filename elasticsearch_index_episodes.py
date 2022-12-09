@@ -1,4 +1,5 @@
 from episodes_encoding import episodes_encoding
+import pandas as pd
 
 """
 episode_dict = {
