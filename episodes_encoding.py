@@ -1,8 +1,4 @@
-from sentence_transformers import SentenceTransformer, util
-
-def episodes_encoding(list_text):
-    model_name = "all-mpnet-base-v2" # "multi-qa-MiniLM-L6-cos-v1" (smaller and faster, but less accurate)
-    model = SentenceTransformer(model_name)
+def episodes_encoding(list_text, model):
     sentence_encodings = model.encode(list_text)
     return sentence_encodings
 
