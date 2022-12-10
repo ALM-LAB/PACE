@@ -22,7 +22,8 @@ for title in tqdm(chapter_titles):
     prompt = [title] * num_images
     images = pipe(prompt).images
     for i,image in enumerate(images):
-        if not os.path.exists(f"images/{title}"):
-            os.makedirs(f"images/{title}") 
-        image.save(f"images/{title}/{i}.png")
+        title_path = title.replace(" ", "_")
+        if not os.path.exists(f"images/{title_path}"):
+            os.makedirs(f"images/{title_path}") 
+        image.save(f"images/{title_path}/{i}.png")
 

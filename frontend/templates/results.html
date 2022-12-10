@@ -18,21 +18,32 @@
 
 </head>
 
-<body>
+<body class="gradient-body h-100">
     
     <br><br>
     <div class="container" style="margin-top: auto; margin-bottom: auto; padding-bottom: 15%"">
         <h1 align="center">
 
-            <a href="/" style="text-decoration:none; color: #000;">PodMagic</a>
+            <a href="/" class="logo-text" style="text-decoration:none; color: #000;">PodMagic</a>
             
         </h1>
         <p align="center">Podcast search, with superpowers.</p>
         <br>
-        <form class="d-flex" action="/search/results" method="post">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="input" autofocus>
-            <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
+        <center>
+            <form class="" action="/search/results" method="post">
+                <div class="d-flex">
+                    <input class="form-control me-2 search-bar" type="search" placeholder="Search" aria-label="Search" name="input" autofocus>
+                    <button class="btn btn-outline-success search-button" type="submit">Search</button>
+                </div>
+                <br>
+                <div class="form-check form-switch">
+                    <label class="form-check-label" for="flexSwitchCheckDefault">🚀 Magic</label>
+                    <br>
+                    <input class="checkbox" type="checkbox" id="flexSwitchCheckDefault" name="magic">
+                </div>
+
+            </form>
+        </center>
 
         <br>
         <center>
@@ -48,22 +59,27 @@
                 {% for hit in res['hits']['hits'] %}
 
                 {% set url_audio = hit['_source']['audio_url'] %}
+                {% set episode_title = hit['_source']['episode_title'].replace("'", "&#39;").replace('"', '&quot') %}
                 {% set chapter_gist = hit['_source']['chapter_gist'].replace("'", "&#39;").replace('"', '&quot') %}
                 {% set chapter_summary = hit['_source']['chapter_summary'].replace("'", "&#39;").replace('"', '&quot') %}
+                {% set episode_pub_date = " ".join(hit['_source']['episode_pub_date'].split()[:4]) %}
+                {% set player_text = "Listen to " + episode_title + " - " + chapter_gist %}
+                {% set start_time = hit['_source']['start'] %}
+                {% set generated_artwork = "images/"+chapter_gist.replace(" ", "_")+"/chapter.gif" %}
                 {% set placeholder = "" %}
                 
 
                 <div class="card mb-3" style="max-width: 100%;">
                     <div class="row g-0 vertical-center">
                         <div class="col-sm-2 ">
-                        <img src="{{ placeholder }}" class="img-fluid rounded" alt="artwork" style="max-width: 100%; vertical-align: middle;">
+                        <img src="{{ url_for('static', filename=generated_artwork) }}" class="img-fluid rounded" alt="artwork" style="max-width: 100%; vertical-align: middle;">
                         </div>
                         <div class="col-md-10">
                         <div class="card-body">
-                            <h5 class="card-title">{{ chapter_gist }}</h5>
-                            <p class="card-text">...{{ hit['highlight']['chapter_summary'][0][:200] if 'chapter_summary' in hit['highlight'] else hit['_source']['chapter_summary'][:200] |safe }}...</p>
-                            <p class="card-text"><small class="text-muted">{{ placeholder }}</small></p>
-                            <button onclick="update_url_source('{{ url_audio }}', '{{ chapter_gist }}')" class="btn btn-primary">Listen</button>
+                            <h5 class="card-title">{{ episode_title }}</h5>
+                            <p class="card-text"><b>{{ chapter_gist }}</b>: {{ hit['highlight']['chapter_summary'][0][:200] if 'chapter_summary' in hit['highlight'] else hit['_source']['chapter_summary'][:200] |safe }}...</p>
+                            <p class="card-text"><small class="text-muted">{{ episode_pub_date }}</small></p>
+                            <button onclick="update_url_source_chapter('{{ url_audio }}', '{{ player_text }}', {{ start_time }})" class="btn btn-primary">Listen</button>
                             
                         </div>
                         
@@ -89,7 +105,7 @@
                         <div class="col-md-10">
                         <div class="card-body">
                             <h5 class="card-title">{{ hit['_source']['episode_title'] }}</h5>
-                            <p class="card-text">...{{ hit['highlight']['episode_description_clean'][0][:200] if 'episode_description_clean' in hit['highlight'] else hit['_source']['episode_description_clean'][:200] |safe }}...</p>
+                            <p class="card-text">{{hit['_source']['episode_description_clean'][:200] |safe }}...</p>
                             <p class="card-text"><small class="text-muted">{{ podcast_date }}</small></p>
                             <button onclick="update_url_source('{{ url_audio }}', '{{ podcast_title }}')" class="btn btn-primary">Listen</button>
                             
@@ -111,8 +127,7 @@
         
 
     </div>
-    <div class="footer d-flex flex-column h-100" 
-            style="position: fixed; left: 0; top: 85%;  z-index: 999999; width: 100%; height: 15%; background-color: #FFF; text-align: center; border-top: 1px solid #e5e5e5;">
+    <div class="footer d-flex flex-column h-100 footer-player-container">
         <center>
             <p style="margin-top: 10px; text-overflow: ellipsis; width: 90%; overflow: hidden; white-space: nowrap;"><span id="now_playing">No episode playing</span></p>
             <audio id="player">
@@ -142,6 +157,28 @@
         player.play();
         // only the first 20 characters of the title
         document.getElementById("now_playing").innerHTML = "<b>Now playing:</b> " + title;
+    }
+    function update_url_source_chapter(url, player_text, start_time) {
+        player.source = {
+            type: 'audio',
+            title: player_text,
+            sources: [{
+                src: url,
+                type: 'audio/mpeg',
+            }],
+        };
+        //start playing muted
+        //player.muted = true;
+        document.getElementById("now_playing").innerHTML = player_text;
+        // wait for the player to load the data
+        player.on('loadeddata', function() {
+            // seek to the start time
+            player.currentTime = start_time/1000;
+            // unmute
+            //player.muted = false;
+            // play
+            player.play();
+        });
     }
 
   </script>
