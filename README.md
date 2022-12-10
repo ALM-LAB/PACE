@@ -38,10 +38,10 @@ We finally leverage diffusion models to create an image/gif for each chapter.
 
 10. [ ] Web app
 
-    - [ ] Implement flask-based web app
-    - [ ] Implement search bar
+    - [x] Implement flask-based web app
+    - [x] Implement search bar
     - [ ] Implement search results
-    - [ ] Implement player
+    - [x] Implement player
 
 **END OF PHASE 2**
 
