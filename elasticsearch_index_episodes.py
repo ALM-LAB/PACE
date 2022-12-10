@@ -5,6 +5,8 @@ from tqdm import tqdm
 from copy import deepcopy
 
 """
+Example of episode_dict:
+
 episode_dict = {
             "episode_title": title,
             "episode_description": description,
@@ -18,6 +20,7 @@ episode_dict = {
         }
 """
 
+## Function for indexing episodes in Elasticsearch
 def elasticsearch_index_episodes(df_episodes, episode_embedding_dict, description_clean_dict, dense_dim):
 
     ## Create mapping
@@ -36,35 +39,41 @@ def elasticsearch_index_episodes(df_episodes, episode_embedding_dict, descriptio
         index_properties['mappings']['properties'][t] = { "type": "dense_vector", 
                                                           "dims": dense_dim }
     
+    ## Create Elasticsearch index
     es = Elasticsearch()
     es.indices.delete(index="podmagic-episodes", ignore=[404])
     es.indices.create(index="podmagic-episodes", body=index_properties)
     
+    ## Index episodes
     for row in tqdm(df_episodes.iterrows(), total=df_episodes.shape[0]):
         try:
-            # convert the entire row to a dictionary
+            ## Convert the entire row to a dictionary
             v = row[1].to_dict()
             v["episode_embedding"] = episode_embedding_dict[v["episode_id"]]
             v["episode_description_clean"] = description_clean_dict[v["episode_id"]]
             res = es.index(index="podmagic-episodes", id=v["episode_id"], body=v)
-            #print(res['result'])
         except Exception as e:
             print(e)
             print("Error with episode_id: ", v["episode_id"])
 
+    ## Refresh index
     es.indices.refresh(index="podmagic-episodes")
 
 
-'''
-df["episode_id"] = episode_ids
-df["chapter_id"] = chapter_ids
-df["chapter_gist"] = chapter_gists
-df["chapter_summary"] = chapter_summaries
-df["audio_url"] = audio_urls
-df["start"] = starts
-df["end"] = ends
-'''
+"""
+Example of chapter_df:
 
+    df["episode_id"] = episode_ids
+    df["chapter_id"] = chapter_ids
+    df["chapter_gist"] = chapter_gists
+    df["chapter_summary"] = chapter_summaries
+    df["audio_url"] = audio_urls
+    df["start"] = starts
+    df["end"] = ends
+
+"""
+
+## Function for indexing chapters in Elasticsearch
 def elasticsearch_index_chapters(df_chapters, chapter_embedding_dict, dense_dim):
 
     ## Create mapping
@@ -85,19 +94,21 @@ def elasticsearch_index_chapters(df_chapters, chapter_embedding_dict, dense_dim)
         index_properties['mappings']['properties'][t] = { "type": "dense_vector", 
                                                           "dims": dense_dim }
     
+    ## Create Elasticsearch index
     es = Elasticsearch()
     es.indices.delete(index="podmagic-chapters", ignore=[404])
     es.indices.create(index="podmagic-chapters", body=index_properties)
     
+    ## Index chapters
     for row in tqdm(df_chapters.iterrows(), total=df_chapters.shape[0]):
         try:
-            # convert the entire row to a dictionary
+            ## Convert the entire row to a dictionary
             v = row[1].to_dict()
             v["chapter_embedding"] = chapter_embedding_dict[v["chapter_id"]]
             res = es.index(index="podmagic-chapters", id=v["chapter_id"], body=v)
-            #print(res['result'])
         except Exception as e:
             print(e)
             print("Error with chapter_id: ", v["chapter_id"])
 
+    ## Refresh index
     es.indices.refresh(index="podmagic-chapters")
