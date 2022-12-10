@@ -8,7 +8,10 @@ model_name = "all-mpnet-base-v2" # "multi-qa-MiniLM-L6-cos-v1" (smaller and fast
 encoder_model = SentenceTransformer(model_name)
 encoder_model.to(device)
 
-app = Flask(__name__)
+static_folder = 'static'
+
+
+app = Flask(__name__, static_folder=static_folder)
 es = Elasticsearch('127.0.0.1', port=9200)
 
 @app.route('/')
@@ -69,4 +72,4 @@ def search_request():
 
 if __name__ == '__main__':
     app.secret_key = 'mysecret'
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=9000, debug=True)
