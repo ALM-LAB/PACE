@@ -2,8 +2,8 @@ import pandas as pd
 from tqdm import tqdm
 import math
 
+## Function to convert duration to seconds
 def uniform_duration(duration):
-    #try:
     try:
         if isinstance(duration, float) or (":" not in duration and '"' not in duration and "'" not in duration):
                 return int(duration)
@@ -27,18 +27,21 @@ def uniform_duration(duration):
         print(e)
         return 0
 
-#read the data
-df = pd.read_csv('data/news_episodes.csv')
-print(df.columns)
+if __name__ == "__main__":
 
-ud = []
-for i, d in enumerate(tqdm(list(df.episode_duration))):
-    ud.append(uniform_duration(d))
-df["uniform_duration"] = ud
+    ## Read data
+    df = pd.read_csv('data/news_episodes.csv')
+    print(df.columns)
 
-# sum uniform duration group by podcast_name
-print("grouping...")
-groups = df.groupby("podcast_name")
-for i, tuple in enumerate(groups):
-    name, group = tuple
-    print(i, " - ", name, " - ", group.uniform_duration.sum()/3600)
+    ## Convert duration to seconds by using uniform_duration function
+    ud = []
+    for i, d in enumerate(tqdm(list(df.episode_duration))):
+        ud.append(uniform_duration(d))
+    df["uniform_duration"] = ud
+
+    ## Sum uniform duration group by podcast_name
+    print("grouping...")
+    groups = df.groupby("podcast_name")
+    for i, tuple in enumerate(groups):
+        name, group = tuple
+        print(i, " - ", name, " - ", group.uniform_duration.sum()/3600)
