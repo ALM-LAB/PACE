@@ -17,7 +17,7 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 print(device)
 model = model.to(device)
 
-COHERE = False
+COHERE = True
 
 '''
 from elasticsearch import Elasticsearch
