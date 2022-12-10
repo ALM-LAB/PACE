@@ -5,9 +5,7 @@ from tqdm import tqdm
 
 ## Stable Diffusion Pipeline for generating images from text
 pipe = StableDiffusionPipeline.from_pretrained("CompVis/stable-diffusion-v1-4",
-    guidance_scale=7.5,
-    revision="fp16", 
-    torch_dtype=torch.float16)  
+    guidance_scale=7.5)
 pipe = pipe.to("cuda")
 
 ## Read the chapter titles from the csv file
