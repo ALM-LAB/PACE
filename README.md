@@ -1,7 +1,6 @@
 # PodMAGIC
 
-A Project by ***ALM LAB***  
-***(Audio, Language and Multimedia Lab***
+A Project by ***ALM LAB (Audio, Language and Multimedia Lab)***
 
 ---
 
