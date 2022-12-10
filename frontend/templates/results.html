@@ -21,9 +21,10 @@
 <body>
     
     <br><br>
-    <div class="container" style="margin-top: auto; margin-bottom: auto; padding-bottom: 5%"">
+    <div class="container" style="margin-top: auto; margin-bottom: auto; padding-bottom: 15%"">
         <h1 align="center">
-            <a href="/">PodMagic</a>
+
+            <a href="/" style="text-decoration:none; color: #000;">PodMagic</a>
             
         </h1>
         <p align="center">Podcast search, with superpowers.</p>
@@ -34,10 +35,8 @@
         </form>
 
         <br>
-        <hr>
         <center>
-            <p style="text-align: center;"><b>"{{ input }}"</b></p>
-            <p style="text-align: center;"> {{ res['hits']['total']["value"] }} results</p>
+            <p style="text-align: center;"><b>You searched for:</b> "{{ input }}"</p>
         </center>
         <br> 
         <!-- if there are results -->
@@ -46,7 +45,9 @@
             {% for hit in res['hits']['hits'] %}
 
             {% set url_audio = hit['_source']['episode_audio_link'] %}
-            {% set podcast_title = hit['_source']['episode_title'] %}
+            {% set podcast_title = hit['_source']['episode_title'].replace("'", "&#39;").replace('"', '&quot') %}
+            {% set podcast_date = " ".join(hit['_source']['episode_pub_date'].split()[:4]) %}
+            
 
             <div class="card mb-3" style="max-width: 100%;">
                 <div class="row g-0 vertical-center">
@@ -57,7 +58,7 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ hit['_source']['episode_title'] }}</h5>
                         <p class="card-text">...{{ hit['highlight']['episode_description_clean'][0][:200] if 'episode_description_clean' in hit['highlight'] else hit['_source']['episode_description_clean'][:200] |safe }}...</p>
-                        <p class="card-text"><small class="text-muted">{{ hit['_source']['episode_pub_date']}}</small></p>
+                        <p class="card-text"><small class="text-muted">{{ podcast_date }}</small></p>
                         <button onclick="update_url_source('{{ url_audio }}', '{{ podcast_title }}')" class="btn btn-primary">Listen</button>
                         
                     </div>
@@ -77,11 +78,14 @@
         
 
     </div>
-    <div class="footer d-flex flex-column h-100" style="position: fixed; left: 0; top: 90%;  z-index: 999999; width: 100%; height: 10%; background-color: #FFF; text-align: center;">
-        <p style="visibility: none" >Now playing: <span id="now_playing">...</span></p>
-        <audio id="player" controls>
-            <source src="" type="audio/mpeg">
-        </audio>
+    <div class="footer d-flex flex-column h-100" 
+            style="position: fixed; left: 0; top: 85%;  z-index: 999999; width: 100%; height: 15%; background-color: #FFF; text-align: center; border-top: 1px solid #e5e5e5;">
+        <center>
+            <p style="margin-top: 10px; text-overflow: ellipsis; width: 90%; overflow: hidden; white-space: nowrap;"><span id="now_playing">No episode playing</span></p>
+            <audio id="player">
+                <source src="" type="audio/mpeg">
+            </audio>
+        </center>
     </div>
 </body>
 
@@ -89,21 +93,23 @@
 <script>
     const player = new Plyr('#player', {
         title: 'Now playing',
+        global: false,
       });
 
     // update source
     function update_url_source(url, title) {
         player.source = {
             type: 'audio',
+            title: title,
             sources: [{
                 src: url,
                 type: 'audio/mpeg',
             }],
         };
         player.play();
-        document.getElementById("now_playing").innerHTML = title;
+        // only the first 20 characters of the title
+        document.getElementById("now_playing").innerHTML = "<b>Now playing:</b> " + title;
     }
-
 
   </script>
 

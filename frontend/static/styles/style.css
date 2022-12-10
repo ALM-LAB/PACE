@@ -1,3 +1,9 @@
 main > .container {
   padding-top: 100px;
 }
+
+/* class vertical-center */
+.vertical-center {
+  display: flex;
+  align-items: center;
+}
