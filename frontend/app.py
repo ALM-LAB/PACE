@@ -18,7 +18,7 @@ es = Elasticsearch('127.0.0.1', port=9200)
 cohere_api_key = "c8ES1KWN9nd8uObqxiBvBWEQ450asuAkoF61EYCg"
 co = cohere.Client(cohere_api_key)
 
-COHERE = False
+COHERE = True
 
 @app.route('/')
 def home():
@@ -46,44 +46,28 @@ def search_request():
                 query_vector = np.array(query_vector)
             else:
                 query_vector = encoder_model.encode(search_term)
-
-            query = {
-                "query": {
-                    "script_score": {
-                        "query": {
-                            "multi_match": {
-                                "query": search_term,
-                                "fields": fields
-                            }
-                        },
-                        "script": {
-                            "source": f"cosineSimilarity(params.query_vector, '{dense_field}') + 1",
-                            "params": {"query_vector": query_vector}
-                        }
-                    }
-                },
-            }
                 
         else:
             fields = ["episode_title", "episode_description_clean"]
             dense_field = "episode_embedding"
             query_vector = encoder_model.encode(search_term)
-            query = {
-                "query": {
-                    "script_score": {
-                        "query": {
-                            "multi_match": {
-                                "query": search_term,
-                                "fields": fields
-                            }
-                        },
-                        "script": {
-                            "source": f"cosineSimilarity(params.query_vector, '{dense_field}') + 1",
-                            "params": {"query_vector": query_vector}
+
+        query = {
+            "query": {
+                "script_score": {
+                    "query": {
+                        "multi_match": {
+                            "query": search_term,
+                            "fields": fields
                         }
+                    },
+                    "script": {
+                        "source": f"cosineSimilarity(params.query_vector, '{dense_field}') + 1",
+                        "params": {"query_vector": query_vector}
                     }
-                },
-            }
+                }
+            },
+        }
 
         print (f"Searching for {search_term} in {fields} using {dense_field} with vector {query_vector.shape}") 
         

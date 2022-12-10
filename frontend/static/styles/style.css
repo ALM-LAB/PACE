@@ -7,3 +7,109 @@ main > .container {
   display: flex;
   align-items: center;
 }
+
+/* set the background of the entire page */
+.gradient-body {
+  /*
+  background: rgb(131,58,180);
+  background: -moz-linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
+  background: -webkit-linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
+  background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#833ab4",endColorstr="#fcb045",GradientType=1);
+  */
+  /* text color white 
+  color: white;*/
+  /* align all text to the center vertically and horizontally 
+  text-align: center;*/
+}
+
+/* search button with modern design */
+.search-button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+/* search bar with modern design and a little bit of shadow - also focused */
+.search-bar, .search-bar:focus {
+  border-radius: 12px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+/* Logo text with modern clear and elegant font - with a little bit of shadow */
+/* Google product sans font */
+/* insert magic animation */
+
+.logo-text {
+  font-size: 50px;
+  font-family: 'Product Sans', Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+}
+
+
+body {
+	background: linear-gradient(-45deg, #EFFFFD, #B8FFF9, #85F4FF, #42C2FF);
+	background-size: 5000% 5000%;
+	animation: gradient 15s ease infinite;
+	height: 1000vh;
+  /* text color white 
+  color: white;*/
+  height: 100%;
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+.footer-player-container{
+  position: fixed; 
+  left: 0; 
+  top: 90%; 
+  z-index: 999999; 
+  width: 100%; 
+  height: 10%; 
+  background-color: #FFF; 
+  text-align: center; 
+  border-top: 1px solid #000;
+  min-height: 200px;
+  box-shadow: 0px -2px 5px 0px rgba(0,0,0,0.75);
+}
+
+/* for mobile */
+@media only screen and (max-width: 2000px) {
+  .footer-player-container{
+    position: fixed; 
+    left: 0; 
+    top: 85%; 
+    z-index: 999999; 
+    width: 100%; 
+    height: 15%; 
+    background-color: #FFF; 
+    text-align: center; 
+    border-top: 1px solid #e5e5e5;
+    /* a little bit of shadow to the top */
+    box-shadow: 0px -1px 10px 0px rgba(0,0,0,0.75);
+  }
+}
