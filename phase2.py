@@ -1,23 +1,25 @@
+import torch
+import numpy as np
+import pandas as pd
 import os
 import json
-import pandas as pd
 from tqdm import tqdm
-import cohere
 import time
-import numpy as np
-import torch
+
+from sentence_transformers import SentenceTransformer
+import cohere
 
 from elasticsearch_index_episodes import elasticsearch_index_chapters
 
-#import sentenceBERT
-from sentence_transformers import SentenceTransformer
-model_name = "all-mpnet-base-v2"
-model = SentenceTransformer(model_name)
 device = "cuda" if torch.cuda.is_available() else "cpu"
 print(device)
-model = model.to(device)
 
 COHERE = True
+
+model_name = "all-mpnet-base-v2"
+model = SentenceTransformer(model_name)
+model = model.to(device)
+
 
 '''
 from elasticsearch import Elasticsearch
@@ -32,6 +34,7 @@ for hit in resp['hits']['hits']:
 
 exit()
 '''
+
 
 cohere_api_key = 'c8ES1KWN9nd8uObqxiBvBWEQ450asuAkoF61EYCg'
 co = cohere.Client(cohere_api_key)
@@ -53,7 +56,8 @@ counter = 0
 
 for episode in tqdm(selected_episodes):
     episode_id = episode[:-4]
-    #load json file
+    
+    ## Load Json file
     with open(os.path.join("data", "transcriptions", episode), "r") as f:
         data = json.load(f)
     
@@ -62,7 +66,7 @@ for episode in tqdm(selected_episodes):
             time.sleep(45)
             counter = 0
 
-    #get the chapters
+    ## Get Chapters 
     chapters = data["chapters"]
     audio_url = data["audio_url"]
     print("Episode:", episode)
@@ -78,7 +82,7 @@ for episode in tqdm(selected_episodes):
         start = chapter["start"]
         end = chapter["end"]
 
-        #store info
+        ## Store the information retrieved
         chapter_ids.append(chapter_id)
         chapter_gists.append(gist)
         chapter_summaries.append(summary)
@@ -87,19 +91,15 @@ for episode in tqdm(selected_episodes):
         starts.append(start)
         ends.append(end)
 
+        ## Embed the summary
         if COHERE:
-            #embed the summary
-            response = co.embed(
-                texts=[summary],
-                model="small",
-            )
-        
+            response = co.embed(texts=[summary], model="small")
             embedded_summary = response.embeddings[0]
             embedded_summary = np.array(embedded_summary)
         else:
             embedded_summary = model.encode(summary)
 
-        #store the embedded summary
+        ## Store the embedded summary
         embedded_summaries[chapter_id] = embedded_summary
 
         print("\t", i+1, "-", gist)
