@@ -3,6 +3,7 @@ from elasticsearch import Elasticsearch
 from sentence_transformers import SentenceTransformer
 import torch
 import cohere
+import numpy as np
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 model_name = "all-mpnet-base-v2" # "multi-qa-MiniLM-L6-cos-v1" (smaller and faster, but less accurate)
@@ -16,6 +17,8 @@ app = Flask(__name__, static_folder=static_folder)
 es = Elasticsearch('127.0.0.1', port=9200)
 cohere_api_key = "c8ES1KWN9nd8uObqxiBvBWEQ450asuAkoF61EYCg"
 co = cohere.Client(cohere_api_key)
+
+COHERE = False
 
 @app.route('/')
 def home():
@@ -38,29 +41,52 @@ def search_request():
         if is_magic:
             fields = ["chapter_gist", "chapter_summary"]
             dense_field = "chapter_embedding"
-            query_vector = co.embed(texts=[search_term], model="small").embeddings[0]
-            print (len(query_vector))
+            if COHERE:
+                query_vector = co.embed(texts=[search_term], model="small").embeddings[0]
+                query_vector = np.array(query_vector)
+            else:
+                query_vector = encoder_model.encode(search_term)
+
+            query = {
+                "query": {
+                    "script_score": {
+                        "query": {
+                            "multi_match": {
+                                "query": search_term,
+                                "fields": fields
+                            }
+                        },
+                        "script": {
+                            "source": f"cosineSimilarity(params.query_vector, '{dense_field}') + 1",
+                            "params": {"query_vector": query_vector}
+                        }
+                    }
+                },
+            }
+                
         else:
             fields = ["episode_title", "episode_description_clean"]
             dense_field = "episode_embedding"
             query_vector = encoder_model.encode(search_term)
-
-        query = {
-            "query": {
-                "script_score": {
-                    "query": {
-                        "multi_match": {
-                            "query": search_term,
-                            "fields": fields
+            query = {
+                "query": {
+                    "script_score": {
+                        "query": {
+                            "multi_match": {
+                                "query": search_term,
+                                "fields": fields
+                            }
+                        },
+                        "script": {
+                            "source": f"cosineSimilarity(params.query_vector, '{dense_field}') + 1",
+                            "params": {"query_vector": query_vector}
                         }
-                    },
-                    "script": {
-                        "source": f"cosineSimilarity(params.query_vector, '{dense_field}') + 1",
-                        "params": {"query_vector": query_vector}
                     }
-                }
-            },
-        }
+                },
+            }
+
+        print (f"Searching for {search_term} in {fields} using {dense_field} with vector {query_vector.shape}") 
+        
 
     else:
         query = {
@@ -73,11 +99,14 @@ def search_request():
         }
 
     if is_magic:
-        res = es.search(
-            index="podmagic-chapters", 
-            size=20, 
-            body=query
-        )
+        try:
+            res = es.search(
+                index="podmagic-chapters", 
+                size=20, 
+                body=query
+            )
+        except Exception as e:
+            print (e)
     else:
         res = es.search(
             index="podmagic-episodes", 

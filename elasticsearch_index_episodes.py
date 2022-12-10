@@ -81,7 +81,7 @@ def elasticsearch_index_chapters(df_chapters, chapter_embedding_dict, dense_dim)
         index_properties['mappings']['properties'][t] = { "type": "text", "index" : "false" }
     for t in ['start', 'end']: 
         index_properties['mappings']['properties'][t] = { "type": "integer" }
-    for t in ["episode_embedding"]: 
+    for t in ["chapter_embedding"]: 
         index_properties['mappings']['properties'][t] = { "type": "dense_vector", 
                                                           "dims": dense_dim }
     
