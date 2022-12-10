@@ -17,7 +17,7 @@ episode_dict = {
         }
 """
 
-def elasticsearch_index_episodes(dict_episodes, dense_dim):
+def elasticsearch_index_episodes(dict_episodes, episode_embedding_dict, dense_dim):
 
     ## Create mapping
     index_properties = {}
@@ -42,6 +42,7 @@ def elasticsearch_index_episodes(dict_episodes, dense_dim):
     es.indices.create(index="podmagic-episodes", body=index_properties)
     
     for _, v in tqdm(dict_episodes.items()): 
+        v["episode_embedding"] = episode_embedding_dict[v["episode_id"]]
         res = es.index(index="podmagic-episodes", id=v["episode_id"], body=v)
         print(res['result'])
 
