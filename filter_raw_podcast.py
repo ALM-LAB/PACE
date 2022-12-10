@@ -1,32 +1,36 @@
 import pandas as pd
 
-df = pd.read_csv('data/df_popular_podcasts.csv')
 
-# get unique Main Genres
-genres = df['Primary Genre'].unique()
+if __name__ == "__main__":
 
-# get count of podcasts for each genre and print it ordered by count
-genre_counts = {}
-for genre in genres:
-    genre_counts[genre] = len(df[df['Primary Genre'] == genre])
+    ## Read data 
+    df = pd.read_csv('data/df_popular_podcasts.csv')
 
-for genre, count in sorted(genre_counts.items(), key=lambda x: x[1], reverse=False):
-    if "news" in genre.lower():
-        print(f"{genre}: {count}") 
+    ## Get unique Main Genres
+    genres = df['Primary Genre'].unique()
 
-print(f"Unique genres: {len(genres)}")
+    ## Get count of podcasts for each genre and print it, ordered by count
+    genre_counts = {}
+    for genre in genres:
+        genre_counts[genre] = len(df[df['Primary Genre'] == genre])
 
-# leave only news podcasts
-df = df[df['Primary Genre'].str.contains("News", na=False)]
+    for genre, count in sorted(genre_counts.items(), key=lambda x: x[1], reverse=False):
+        if "news" in genre.lower():
+            print(f"{genre}: {count}") 
 
-# drop duplicates
-df = df.drop_duplicates(subset=['Feed URL'])
+    print(f"Unique genres: {len(genres)}")
 
-# count number of podcasts
-print(f"Number of news podcasts: {len(df)}")
+    ## Leave only news podcasts
+    df = df[df['Primary Genre'].str.contains("News", na=False)]
 
-# save filtered dataframe to csv
-df.to_csv('data/news_podcast.csv', index=False)
+    ## Drop possible duplicates
+    df = df.drop_duplicates(subset=['Feed URL'])
+
+    ## Count number of remaining news podcasts
+    print(f"Number of news podcasts: {len(df)}")
+
+    ## Save filtered dataframe to a new csv
+    df.to_csv('data/news_podcast.csv', index=False)
 
 
 
