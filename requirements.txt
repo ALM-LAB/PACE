@@ -10,3 +10,4 @@ transformers
 torch
 spacy
 sentence-transformers
+flask

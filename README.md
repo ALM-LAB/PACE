@@ -7,12 +7,13 @@ Audio, Language and Multimedia Lab
 ## Pipeline
 
 **PHASE 1**
-1. Ingest podcasts rss [x]
-2. Enrich dataframe with episodes and related metadata [x]
-3. Filter episodes' description using [BERT](https://huggingface.co/morenolq/spotify-podcast-advertising-classification) [x]
-4. Encode episodes' description using [sentence BERT](https://sbert.net/docs/pretrained_models.html) [x]
-5. Index episodes in elasticsearch [x]
-6. **TEST**: Query elasticsearch using [sentence BERT](https://sbert.net/docs/pretrained_models.html)
+
+- [x] Ingest podcasts rss 
+- [x] Enrich dataframe with episodes and related metadata 
+- [x] Filter episodes' description using [BERT](https://huggingface.co/morenolq/spotify-podcast-advertising-classification) 
+- [x] Encode episodes' description using [sentence BERT](https://sbert.net/docs/pretrained_models.html) 
+- [x] Index episodes in elasticsearch 
+- [x] **TEST**: Query elasticsearch using [sentence BERT](https://sbert.net/docs/pretrained_models.html) 
 
 **END OF PHASE 1**
 
@@ -28,11 +29,22 @@ Audio, Language and Multimedia Lab
 
 9. **TEST**: Query elasticsearch using [sentence BERT](https://sbert.net/docs/pretrained_models.html)
 
+10. Web app
+    - [ ] Implement flask-based web app
+    - [ ] Implement search bar
+    - [ ] Implement search results
+    - [ ] Implement player
+
 **END OF PHASE 2**
 
 **PHASE 3**
 
-10. Generative models (generate gifs for chapters)
-11. How to store these gifs? Static files? Need a way to index the images/gifs.
+11. Generative models (generate gifs for chapters)
+12. How to store these gifs? Static files? Need a way to index the images/gifs.
 
 **END OF PHASE 3**
+
+
+## Acknowledgements
+
+- plyr.io https://github.com/sampotts/plyr

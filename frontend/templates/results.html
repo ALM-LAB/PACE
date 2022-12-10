@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <link rel="icon" href="http://obj-cache.cloud.ruanbekker.com/favicon.ico">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.plyr.io/3.7.3/plyr.js"></script>
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.3/plyr.css" />
+
+
+    <title>Results</title>
+
+</head>
+
+<body>
+
+    <div class="container">
+        <div style="background:transparent !important" class="jumbotron">
+            <div style="font-family: 'Pacifico', cursive;">
+                <a href="/">
+                    <center>
+                        <h1>
+                            PodMagic
+                        </h1>
+                    </center>
+                </a>
+            </div>
+        </div>
+
+        <form action="/search/results" method="post">
+            <div class="input-group">
+                <input type="text" class="form-control input-lg" name="input" placeholder="Search" autofocus>
+                <div class="input-group-btn">
+                    <button class="btn btn-primary btn-lg" type="submit">
+          <i class="glyphicon glyphicon-search"></i>
+        </button>
+                </div>
+            </div>
+        </form>
+
+        <!--
+        <center>
+            <h1>Results: ({{ res['hits']['total'] }}) </h1>
+        </center>
+        -->
+        <br>
+        <hr>
+        <center>
+            <p style="text-align: center;"><b>"{{ input }}"</b></p>
+            <p style="text-align: center;"> {{ res['hits']['total']["value"] }} results</p>
+        </center>
+        <br> {% for hit in res['hits']['hits'] %}
+
+        <div class="panel panel-default">
+            <div class="panel-heading">{{ hit['_source']['episode_title'] }}</div>
+            <div class="panel-body">
+                <p>...{{ hit['highlight']['episode_description_clean'][0] if 'episode_description_clean' in hit['highlight'] else hit['_source']['episode_description_clean'] |safe }}...</p>
+                <br>
+                <!-- <a href="{{ hit['_source']['episode_audio_link'] }}" class="btn btn-primary">Listen!</a> -->
+                <audio id="player" controls>
+                    <source src="{{ hit['_source']['episode_audio_link'] }}" type="audio/mpeg">
+                </audio>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+    </div>
+</body>
+
+
+<script>
+    const player = new Plyr('#player');
+  </script>
+
+</html>
