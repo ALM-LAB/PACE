@@ -59,12 +59,16 @@
                 {% for hit in res['hits']['hits'] %}
 
                 {% set url_audio = hit['_source']['audio_url'] %}
-                {% set episode_title = hit['_source']['episode_title'].replace("'", "&#39;").replace('"', '&quot') %}
-                {% set chapter_gist = hit['_source']['chapter_gist'].replace("'", "&#39;").replace('"', '&quot') %}
-                {% set chapter_summary = hit['_source']['chapter_summary'].replace("'", "&#39;").replace('"', '&quot') %}
-                {% set episode_pub_date = " ".join(hit['_source']['episode_pub_date'].split()[:4]) %}
-                {% set player_text = "Listen to " + episode_title + " - " + chapter_gist %}
+                {% set episode_title = hit['_source']['episode_title'] %}
                 {% set start_time = hit['_source']['start'] %}
+                <!-- convert start_time in milliseconds to HH:MM:SS -->
+                {% set start_timestamp = start_time|ctime %}
+                <!-- add leading 0 to seconds  and leave minutes as is (there can be even minutes > 10) - use split "-" -->
+
+                {% set chapter_gist = hit['_source']['chapter_gist'] %}
+                {% set chapter_summary = hit['_source']['chapter_summary'] %}
+                {% set episode_pub_date = " ".join(hit['_source']['episode_pub_date'].split()[:4]) %}
+                {% set player_text = "Listen to " + episode_title.replace("'", "&#39;").replace('"', '&quot') + " - " + chapter_gist.replace("'", "&#39;").replace('"', '&quot') %}
                 {% set generated_artwork = "images/"+chapter_gist.replace(" ", "_")+"/chapter.gif" %}
                 {% set placeholder = "" %}
                 
@@ -77,7 +81,7 @@
                         <div class="col-md-10">
                         <div class="card-body">
                             <h5 class="card-title">{{ episode_title }}</h5>
-                            <p class="card-text"><b>{{ chapter_gist }}</b>: {{ hit['highlight']['chapter_summary'][0][:200] if 'chapter_summary' in hit['highlight'] else hit['_source']['chapter_summary'][:200] |safe }}...</p>
+                            <p class="card-text">{{start_timestamp}} <b>{{ chapter_gist }}</b>: {{ hit['highlight']['chapter_summary'][0][:200] if 'chapter_summary' in hit['highlight'] else hit['_source']['chapter_summary'][:200] |safe }}...</p>
                             <p class="card-text"><small class="text-muted">{{ episode_pub_date }}</small></p>
                             <button onclick="update_url_source_chapter('{{ url_audio }}', '{{ player_text }}', {{ start_time }})" class="btn btn-primary">Listen</button>
                             

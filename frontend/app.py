@@ -4,6 +4,7 @@ from sentence_transformers import SentenceTransformer
 import torch
 import cohere
 import numpy as np
+from datetime import datetime
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 model_name = "all-mpnet-base-v2" # "multi-qa-MiniLM-L6-cos-v1" (smaller and faster, but less accurate)
@@ -23,6 +24,13 @@ COHERE = True
 @app.route('/')
 def home():
     return render_template('search.html')
+
+@app.template_filter('ctime')
+# convert milliseconds to MM:SS
+def timectime(s):
+    s = datetime.fromtimestamp(s/1000).strftime('%M:%S')
+    return f"({s})"
+
 
 @app.route('/search/results', methods=['GET', 'POST'])
 def search_request():
