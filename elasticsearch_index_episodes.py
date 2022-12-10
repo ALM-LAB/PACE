@@ -70,6 +70,9 @@ Example of chapter_df:
     df["audio_url"] = audio_urls
     df["start"] = starts
     df["end"] = ends
+    df["episode_title"] = episode_titles
+    df["episode_pub_date"] = episode_pub_dates
+    df["podcast_name"] = podcast_names
 
 """
 
@@ -86,7 +89,7 @@ def elasticsearch_index_chapters(df_chapters, chapter_embedding_dict, dense_dim)
 
     for t in ['chapter_gist', 'chapter_summary']: 
         index_properties['mappings']['properties'][t] = { "type": "text" }
-    for t in ['episode_id', 'chapter_id', 'audio_url']: 
+    for t in ['episode_id', 'chapter_id', 'audio_url', 'episode_title', 'episode_pub_date', 'podcast_name']: 
         index_properties['mappings']['properties'][t] = { "type": "text", "index" : "false" }
     for t in ['start', 'end']: 
         index_properties['mappings']['properties'][t] = { "type": "integer" }

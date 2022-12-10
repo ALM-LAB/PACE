@@ -16,34 +16,24 @@ print(device)
 
 COHERE = True
 
+## Load sentence transformer
 model_name = "all-mpnet-base-v2"
 model = SentenceTransformer(model_name)
 model = model.to(device)
 
-
-'''
-from elasticsearch import Elasticsearch
-es = Elasticsearch()
-
-resp = es.search(index="podmagic-chapters", body={"query": {"match_all": {}}})
-print("Got %d Hits:" % resp['hits']['total']['value'])
-for hit in resp['hits']['hits']:
-    # pring gist and summary
-    print(hit["_source"]["chapter_gist"])
-    print(hit["_source"]["chapter_summary"])
-
-exit()
-'''
-
-
+## Load cohere client
 cohere_api_key = 'c8ES1KWN9nd8uObqxiBvBWEQ450asuAkoF61EYCg'
 co = cohere.Client(cohere_api_key)
 
+## Load chapter data
 selected_episodes = os.listdir(os.path.join("data", "transcriptions"))
 selected_episodes = [episode for episode in selected_episodes if not episode.startswith(".")]
 
-embedded_summaries = {}
+## Load episod data
+df = pd.read_csv('data/news_episodes.csv')
 
+## Initialize data structures
+embedded_summaries = {}
 episode_ids = []
 chapter_ids = []
 chapter_gists = []
@@ -51,11 +41,13 @@ chapter_summaries = []
 audio_urls = []
 starts = []
 ends = []
+episode_titles = []
+episode_pub_dates = []
+podcast_names = []
 
 counter = 0
-
 for episode in tqdm(selected_episodes):
-    episode_id = episode[:-4]
+    episode_id = episode[:-5]
     
     ## Load Json file
     with open(os.path.join("data", "transcriptions", episode), "r") as f:
@@ -69,6 +61,13 @@ for episode in tqdm(selected_episodes):
     ## Get Chapters 
     chapters = data["chapters"]
     audio_url = data["audio_url"]
+
+    ## Get episode data
+    episode_data = df[df['episode_audio_link'] == audio_url]
+    episode_title = episode_data['episode_title'].values[0]
+    episode_pub_date = episode_data['episode_pub_date'].values[0]
+    podcast_name = episode_data['podcast_name'].values[0]
+    
     print("Episode:", episode)
     print("# chapters:", len(chapters))
     print("Chapters:")
@@ -90,6 +89,9 @@ for episode in tqdm(selected_episodes):
         audio_urls.append(audio_url)
         starts.append(start)
         ends.append(end)
+        episode_titles.append(episode_title)
+        episode_pub_dates.append(episode_pub_date)
+        podcast_names.append(podcast_name)
 
         ## Embed the summary
         if COHERE:
@@ -114,6 +116,9 @@ df["chapter_summary"] = chapter_summaries
 df["audio_url"] = audio_urls
 df["start"] = starts
 df["end"] = ends
+df["episode_title"] = episode_titles
+df["episode_pub_date"] = episode_pub_dates
+df["podcast_name"] = podcast_names
 
 dense_dim = len(embedded_summary)
 elasticsearch_index_chapters(df, embedded_summaries, dense_dim)
