@@ -18,7 +18,7 @@ episode_dict = {
         }
 """
 
-def elasticsearch_index_episodes(df_episodes, episode_embedding_dict, dense_dim):
+def elasticsearch_index_episodes(df_episodes, episode_embedding_dict, description_clean_dict, dense_dim):
 
     ## Create mapping
     index_properties = {}
@@ -28,12 +28,10 @@ def elasticsearch_index_episodes(df_episodes, episode_embedding_dict, dense_dim)
                                      "_source": {"enabled": "true"}, 
                                      "properties": {} }
 
-    for t in ['episode_title', 'episode_description', 'podcast_creator', 'podcast_name']: 
+    for t in ['episode_title', 'episode_description', 'episode_description_clean', 'podcast_creator', 'podcast_name']: 
         index_properties['mappings']['properties'][t] = { "type": "text" }
-    for t in ['episode_pub_date', 'episode_id', 'episode_audio_link', 'episode_artwork_link']: 
+    for t in ['episode_pub_date', 'episode_id', 'episode_audio_link', 'episode_artwork_link', 'episode_duration']: 
         index_properties['mappings']['properties'][t] = { "type": "text", "index" : "false" }
-    for t in ['episode_duration']: 
-        index_properties['mappings']['properties'][t] = { "type": "float"}
     for t in ["episode_embedding"]: 
         index_properties['mappings']['properties'][t] = { "type": "dense_vector", 
                                                           "dims": dense_dim }
@@ -42,11 +40,16 @@ def elasticsearch_index_episodes(df_episodes, episode_embedding_dict, dense_dim)
     es.indices.delete(index="podmagic-episodes", ignore=[404])
     es.indices.create(index="podmagic-episodes", body=index_properties)
     
-    for row in tqdm(df_episodes.iterrows()):
-        # convert the entire row to a dictionary
-        v = row[1].to_dict()
-        v["episode_embedding"] = episode_embedding_dict[v["episode_id"]]
-        res = es.index(index="podmagic-episodes", id=v["episode_id"], body=v)
-        print(res['result'])
+    for row in tqdm(df_episodes.iterrows(), total=df_episodes.shape[0]):
+        try:
+            # convert the entire row to a dictionary
+            v = row[1].to_dict()
+            v["episode_embedding"] = episode_embedding_dict[v["episode_id"]]
+            v["episode_description_clean"] = description_clean_dict[v["episode_id"]]
+            res = es.index(index="podmagic-episodes", id=v["episode_id"], body=v)
+            #print(res['result'])
+        except Exception as e:
+            print(e)
+            print("Error with episode_id: ", v["episode_id"])
 
     es.indices.refresh(index="podmagic-episodes")

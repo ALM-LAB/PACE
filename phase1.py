@@ -23,12 +23,27 @@ encoder_model.to(device)
 
 df_episodes = pd.read_csv("data/news_episodes.csv")
 episode_embedding_dict = {}
+description_clean_dict = {}
+episodes_id_to_remove = []
 for index in tqdm(df_episodes.index):
     description = df_episodes.loc[index,"episode_description"]
     episode_id = df_episodes.loc[index,"episode_id"]
-    description = description_cleaner(cleaner_model, tokenizer, nlp, description, device)
-    episode_embedding = episodes_encoding(description, encoder_model)
-    episode_embedding_dict[episode_id] = episode_embedding
+    try:
+        description = description_cleaner(cleaner_model, tokenizer, nlp, description, device)
+        episode_embedding = episodes_encoding(description, encoder_model)
+        episode_embedding_dict[episode_id] = episode_embedding
+        description_clean_dict[episode_id] = description
+    except Exception as e:
+        print (e)
+        print("Error with episode_id: ", episode_id)
+        # remove the episode from the dataframe
+        episodes_id_to_remove.append(episode_id)
+
+    if index == 15000:
+        dense_dim = len(episode_embedding)
+        elasticsearch_index_episodes(df_episodes.head(15000), episode_embedding_dict, description_clean_dict, dense_dim)
+
+df_episodes = df_episodes[~df_episodes.episode_id.isin(episodes_id_to_remove)]
 
 dense_dim = len(episode_embedding)
-elasticsearch_index_episodes(df_episodes, episode_embedding_dict, dense_dim)
+elasticsearch_index_episodes(df_episodes, episode_embedding_dict, description_clean_dict, dense_dim)
