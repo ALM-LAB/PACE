@@ -27,22 +27,23 @@ We finally leverage diffusion models to create an image/gif for each chapter.
 **PHASE 2**
 
 7. [x] Select a bunch of podcasts for intra-podcast search (limited by AssemblyAI API)
-8. [ ] Index episodes' chapters in elasticsearch:
+8. [x] Index episodes' chapters in elasticsearch - still 
 
     - Podcast name
     - Chapter description
     - Start & End time
     - Original episode (mp3 link)
 
-9. [ ] **TEST**: Query elasticsearch using [sentence BERT](https://sbert.net/docs/pretrained_models.html)
+9. [ ] **TEST**: Query elasticsearch using [cohere](www.cohere.ai)
 
-10. [ ] Web app
+10. [ ] Web app
 
     - [x] Implement flask-based web app
     - [x] Implement search bar
-    - [ ] Implement search results
+    - [x] Implement search results
     - [x] Implement player
-
+    - [ ] Implement intra-podcast search
+    
 **END OF PHASE 2**
 
 ---

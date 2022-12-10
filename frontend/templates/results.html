@@ -42,32 +42,65 @@
         <!-- if there are results -->
         {% if res['hits']['total']["value"] > 0 %}
 
-            {% for hit in res['hits']['hits'] %}
+            <!-- if chapter search -->
+            {% if is_magic %}
 
-            {% set url_audio = hit['_source']['episode_audio_link'] %}
-            {% set podcast_title = hit['_source']['episode_title'].replace("'", "&#39;").replace('"', '&quot') %}
-            {% set podcast_date = " ".join(hit['_source']['episode_pub_date'].split()[:4]) %}
-            
+                {% for hit in res['hits']['hits'] %}
 
-            <div class="card mb-3" style="max-width: 100%;">
-                <div class="row g-0 vertical-center">
-                    <div class="col-sm-2 ">
-                    <img src="{{ hit['_source']['episode_artwork_link'] }}" class="img-fluid rounded" alt="artwork" style="max-width: 100%; vertical-align: middle;">
-                    </div>
-                    <div class="col-md-10">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ hit['_source']['episode_title'] }}</h5>
-                        <p class="card-text">...{{ hit['highlight']['episode_description_clean'][0][:200] if 'episode_description_clean' in hit['highlight'] else hit['_source']['episode_description_clean'][:200] |safe }}...</p>
-                        <p class="card-text"><small class="text-muted">{{ podcast_date }}</small></p>
-                        <button onclick="update_url_source('{{ url_audio }}', '{{ podcast_title }}')" class="btn btn-primary">Listen</button>
+                {% set url_audio = hit['_source']['audio_url'] %}
+                {% set chapter_gist = hit['_source']['chapter_gist'].replace("'", "&#39;").replace('"', '&quot') %}
+                {% set chapter_summary = hit['_source']['chapter_summary'].replace("'", "&#39;").replace('"', '&quot') %}
+                {% set placeholder = "" %}
+                
+
+                <div class="card mb-3" style="max-width: 100%;">
+                    <div class="row g-0 vertical-center">
+                        <div class="col-sm-2 ">
+                        <img src="{{ placeholder }}" class="img-fluid rounded" alt="artwork" style="max-width: 100%; vertical-align: middle;">
+                        </div>
+                        <div class="col-md-10">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ chapter_gist }}</h5>
+                            <p class="card-text">...{{ hit['highlight']['chapter_summary'][0][:200] if 'chapter_summary' in hit['highlight'] else hit['_source']['chapter_summary'][:200] |safe }}...</p>
+                            <p class="card-text"><small class="text-muted">{{ placeholder }}</small></p>
+                            <button onclick="update_url_source('{{ url_audio }}', '{{ chapter_gist }}')" class="btn btn-primary">Listen</button>
+                            
+                        </div>
                         
+                        </div>
                     </div>
                     
-                    </div>
                 </div>
+                {% endfor %}
+            {% else %}
+
+                {% for hit in res['hits']['hits'] %}
+
+                {% set url_audio = hit['_source']['episode_audio_link'] %}
+                {% set podcast_title = hit['_source']['episode_title'].replace("'", "&#39;").replace('"', '&quot') %}
+                {% set podcast_date = " ".join(hit['_source']['episode_pub_date'].split()[:4]) %}
                 
-            </div>
-            {% endfor %}
+
+                <div class="card mb-3" style="max-width: 100%;">
+                    <div class="row g-0 vertical-center">
+                        <div class="col-sm-2 ">
+                        <img src="{{ hit['_source']['episode_artwork_link'] }}" class="img-fluid rounded" alt="artwork" style="max-width: 100%; vertical-align: middle;">
+                        </div>
+                        <div class="col-md-10">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ hit['_source']['episode_title'] }}</h5>
+                            <p class="card-text">...{{ hit['highlight']['episode_description_clean'][0][:200] if 'episode_description_clean' in hit['highlight'] else hit['_source']['episode_description_clean'][:200] |safe }}...</p>
+                            <p class="card-text"><small class="text-muted">{{ podcast_date }}</small></p>
+                            <button onclick="update_url_source('{{ url_audio }}', '{{ podcast_title }}')" class="btn btn-primary">Listen</button>
+                            
+                        </div>
+                        
+                        </div>
+                    </div>
+                    
+                </div>
+                {% endfor %}
+            {% endif %}
         {% else %}
             <p>No results found.</p>
         {% endif %}

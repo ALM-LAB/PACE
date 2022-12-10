@@ -11,3 +11,4 @@ torch
 spacy
 sentence-transformers
 flask
+cohere
