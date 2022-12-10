@@ -10,7 +10,7 @@ import spacy
 
 #sentence = "On their first episode, Kate and Doree talk about some of their personal rituals, including vision boards and makeup routines. Plus, they discuss peeing on planes, sleeping away from your phone, and their favorite mascaras! To learn more about Forever35 and get a list of the products mentioned on the show, visit www.forever35podcast.com. And you can email Kate and Doree at forever35podcast@gmail.com, and follow them on Instagram at @forever35podcast.Special thanks to launch sponsor Tripping.com! Visit tripping.com/forever35 to find your perfect vacation rental.Theme music by Riot. Hosted on Acast. See acast.com/privacy for more information."
 
-def description_cleaner(model, tokenizer, nlp, sentence):
+def description_cleaner(model, tokenizer, nlp, sentence, device):
     desc_sentences = nlp(sentence)
     desc_sentences = [str(s) for s in desc_sentences.sents]
 
@@ -25,7 +25,7 @@ def description_cleaner(model, tokenizer, nlp, sentence):
                             truncation=True,
                             return_attention_mask=True,
                             return_tensors = 'pt')
-        outputs = model(**out)
+        outputs = model(**out.to(device))
         outputs = F.softmax(outputs.logits, dim=1)
         predicted_label = torch.argmax(outputs, dim=1)
 

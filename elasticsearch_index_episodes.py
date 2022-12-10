@@ -2,6 +2,7 @@ from episodes_encoding import episodes_encoding
 import pandas as pd
 from elasticsearch import Elasticsearch
 from tqdm import tqdm
+from copy import deepcopy
 
 """
 episode_dict = {
@@ -17,7 +18,7 @@ episode_dict = {
         }
 """
 
-def elasticsearch_index_episodes(dict_episodes, episode_embedding_dict, dense_dim):
+def elasticsearch_index_episodes(df_episodes, episode_embedding_dict, dense_dim):
 
     ## Create mapping
     index_properties = {}
@@ -41,7 +42,9 @@ def elasticsearch_index_episodes(dict_episodes, episode_embedding_dict, dense_di
     es.indices.delete(index="podmagic-episodes", ignore=[404])
     es.indices.create(index="podmagic-episodes", body=index_properties)
     
-    for _, v in tqdm(dict_episodes.items()): 
+    for row in tqdm(df_episodes.iterrows()):
+        # convert the entire row to a dictionary
+        v = row[1].to_dict()
         v["episode_embedding"] = episode_embedding_dict[v["episode_id"]]
         res = es.index(index="podmagic-episodes", id=v["episode_id"], body=v)
         print(res['result'])

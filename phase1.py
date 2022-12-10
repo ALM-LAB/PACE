@@ -26,7 +26,7 @@ episode_embedding_dict = {}
 for index in tqdm(df_episodes.index):
     description = df_episodes.loc[index,"episode_description"]
     episode_id = df_episodes.loc[index,"episode_id"]
-    description = description_cleaner(cleaner_model, tokenizer, nlp, description)
+    description = description_cleaner(cleaner_model, tokenizer, nlp, description, device)
     episode_embedding = episodes_encoding(description, encoder_model)
     episode_embedding_dict[episode_id] = episode_embedding
 
