@@ -94,7 +94,7 @@ def elasticsearch_index_chapters(df_chapters, chapter_embedding_dict, dense_dim)
             # convert the entire row to a dictionary
             v = row[1].to_dict()
             v["chapter_embedding"] = chapter_embedding_dict[v["chapter_id"]]
-            res = es.index(index="podmagic-chapters", id=v["episode_id"], body=v)
+            res = es.index(index="podmagic-chapters", id=v["chapter_id"], body=v)
             #print(res['result'])
         except Exception as e:
             print(e)
