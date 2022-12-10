@@ -9,9 +9,9 @@ Audio, Language and Multimedia Lab
 **PHASE 1**
 1. Ingest podcasts rss [x]
 2. Enrich dataframe with episodes and related metadata [x]
-3. Filter episodes' description using [BERT](https://huggingface.co/morenolq/ spotify-podcast-advertising-classification) [x]
+3. Filter episodes' description using [BERT](https://huggingface.co/morenolq/spotify-podcast-advertising-classification) [x]
 4. Encode episodes' description using [sentence BERT](https://sbert.net/docs/pretrained_models.html) [x]
-5. Index episodes in elasticsearch
+5. Index episodes in elasticsearch [x]
 6. **TEST**: Query elasticsearch using [sentence BERT](https://sbert.net/docs/pretrained_models.html)
 
 **END OF PHASE 1**
