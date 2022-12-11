@@ -1,8 +1,18 @@
 # 🎧 PACE: Podcast AI for Chapters and Episodes
 
-![alt text](readme_images/podcast.png)
+<p align="center">
+  <img src="readme_images/podcast.png" alt="logo" width="300"/>
+</p>
 
---- 
+## 📝 Table of Contents
+
+- [🎯 Our IDEA](#-our-idea)
+- [🔎 How does it work?](#-how-does-it-work)
+- [📺 Demo](#-demo)
+- [⏳ Pipeline](#-pipeline)
+- [🙏🏻 Acknowledgements](#-acknowledgements)
+- [🤌🏻 About the project](#-about-the-project)
+
 
 ## 🎯 Our IDEA
 How many times have you been listening to a podcast and you wanted to go back to a specific part, but you don't remember the exact time?
@@ -110,14 +120,14 @@ We finally leverage [stable diffusion models](https://huggingface.co/CompVis/sta
 
 ## 🙏🏻 Acknowledgements
 
-- :AssemblyAI: [AssemblyAI](https://www.assemblyai.com/) for the outstanding experience (and the free credits)
+- [AssemblyAI](https://www.assemblyai.com/) for the outstanding experience (and the free credits)
 - [Cohere](www.cohere.ai) for the amazing API
 - [plyr.io](https://github.com/sampotts/plyr) for the media player design
 - [Huggingface](https://huggingface.co/) for the amazing models
-- ☕️ for the energy
+- ☕️ ☕️ ☕️ for the energy
 
 ---
 
 ## 🤌🏻 About the project 
-PACE is a project created by Alkis Koudounas, Lorenzo Vaiani, and Moreno La Quatra. It is part of the AssemblyAI 50K Hackathon - Winter 2022.
+PACE is a project created by Alkis Koudounas, Lorenzo Vaiani, and Moreno La Quatra. It is part of the ***AssemblyAI 50K Hackathon - Winter 2022***.
 
