@@ -54,10 +54,10 @@ for episode in tqdm(selected_episodes):
         data = json.load(f)
     
     if COHERE:
-        if counter > 90:
-            time.sleep(45)
+        if counter > 85:
+            time.sleep(50)
             counter = 0
-
+    
     ## Get Chapters 
     chapters = data["chapters"]
     audio_url = data["audio_url"]
@@ -93,6 +93,7 @@ for episode in tqdm(selected_episodes):
         episode_pub_dates.append(episode_pub_date)
         podcast_names.append(podcast_name)
 
+        
         ## Embed the summary
         if COHERE:
             response = co.embed(texts=[summary], model="small")
@@ -103,6 +104,7 @@ for episode in tqdm(selected_episodes):
 
         ## Store the embedded summary
         embedded_summaries[chapter_id] = embedded_summary
+        
 
         print("\t", i+1, "-", gist)
         print("\t  ", "-", summary)
@@ -119,6 +121,9 @@ df["end"] = ends
 df["episode_title"] = episode_titles
 df["episode_pub_date"] = episode_pub_dates
 df["podcast_name"] = podcast_names
+
+## Save the dataframe
+df.to_csv("data/df_chapters.csv", index=False)
 
 dense_dim = len(embedded_summary)
 elasticsearch_index_chapters(df, embedded_summaries, dense_dim)
