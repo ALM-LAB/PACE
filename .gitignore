@@ -2,3 +2,4 @@ data/*
 __pycache__/*
 frontend/static/images/*
 images/*
+data/fake_news/*

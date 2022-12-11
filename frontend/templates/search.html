@@ -10,6 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 
 
     <title>Searching...</title>
@@ -19,80 +20,268 @@
 <body class="gradient-body">
     <br><br>
     <div class="container" style="margin-top: auto; margin-bottom: auto;">
-        <h1 align="center" class="logo-text">SherloPod 🔍</h1>
-        <p align="center">Podcast search, with superpowers.</p>
+        <h1 align="center"><a class="logo-text" href="/" style="text-decoration:none; color: #000;">PACE</a></h1>
+        <p align="center"><b>P</b>odcast <b>A</b>I for <b>C</b>hapters and <b>E</b>pisodes<p>
         <br>
-        <center>
-            <form class="" action="/search/results" method="post">
-                <div class="d-flex">
-                    <input class="form-control me-2 search-bar" type="search" placeholder="Search" aria-label="Search" name="input" autofocus>
-                    <button class="btn btn-outline-success search-button" type="submit">Search</button>
-                </div>
-                <br>
-                <div class="form-check form-switch">
-                    <label class="form-check-label" for="flexSwitchCheckDefault">🚀 Magic</label>
-                    <br>
-                    <input class="checkbox" type="checkbox" id="flexSwitchCheckDefault" name="magic">
-                </div>
-
-            </form>
-        </center> 
-
-        <br>
-        <h4>🤌 Why SherloPod?</h4>
-        <p>
-            Podcasts usually contains a lot of information, but it's hard to find what you're looking for.
-            SherloPod is a semantic search engine that helps you find the information you need, in a fast and easy way.
-        </p>
-        <p>
-            To get more superpowers, enable the <b>magic mode</b>. It will use the power of artificial intelligence to search <i>inside</i> the podcast and give you back the exact part you're looking for.
-        </p>
-
-
-        <br>
-
-        <h4>About the project</h4>
-        <p>SherloPod is a project created by 
-            <a href="">Alkis Koudounas</a>
-            <a href="">Lorenzo</a>
-            <a href="https://mlaquatra.me">Moreno La Quatra</a>
-
-
-    </div>
-
-    
-
-    <!--
-    <div class="container">
-        <div style="background:transparent !important" class="jumbotron">
-            <div>
-                <a href="/">
-                    <a href="/">
-                        <center>
-                            <h1>
-                                PodMagic
-                            </h1>
-                        </center>
-                    </a>
-                </a>
-            </div>
-        </div>
-
         <form action="/search/results" method="post">
-            <div class="input-group">
-                <input type="text" class="form-control input-lg" name="input" placeholder="Search" autofocus>
-                <div class="input-group-btn">
-                    <button class="btn btn-primary btn-lg" type="submit">
-            <i class="glyphicon glyphicon-search"></i>
-          </button>
-                </div>
+            <div class="d-flex">
+                <input class="form-control me-2 search-bar" type="search" placeholder="Search for your favourite topic..." aria-label="Search" name="input" autofocus>
+                <button class="btn btn-outline-success search-button" type="submit">🔍</button>
+            </div>
+            <br>
+            <div class="form-check form-switch" style="margin-top: -10px; margin-left: -30px;">
+                <div class="form-check form-switch align-self-md-center">
+                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" name="magic">
+                    <label class="form-check-label" for="flexSwitchCheckDefault"> Inside podcast search </label>
+                    </div>
             </div>
         </form>
 
+        <br>
+        <p>For example you can look for:
+            <ul>
+                <li>🇺🇸 <a href="/search/results?input=US+president+position+about+the+war">US president position about the war</a></li>
+                <li>🇺🇸 <a href="/search/results?input=US+president+position+about+the+war&magic=on">US president position about the war (inside podcast search)</a></li>
+                <li>🦠 <a href="/search/results?input=How+lockdown+has+helped+to+contain+COVID-19">How lockdown has helped to contain COVID-19</a></li>
+                <li>🦠 <a href="/search/results?input=How+lockdown+has+helped+to+contain+COVID-19&magic=on">How lockdown has helped to contain COVID-19 (inside podcast search)</a></li>
+                <li>🌍 <a href="/search/results?input=How+to+save+the+planet">How to save the planet?</a></li>
+                <li>🌍 <a href="/search/results?input=How+to+save+the+planet&magic=on">How to save the planet? (inside podcast search)</a></li>
+                <li>🚗 <a href="/search/results?input=Latest+advancements+in+autonomous+driving">Latest advancements in autonomous driving</a></li>
+            </ul>  
+        </p>
+
+        <hr>
+        <br>
+        <h4>🤌 Why PACE?</h4>
+        <p>
+            Podcasts usually contains a lot of information, but it's hard to find what you're looking for.
+            PACE is a semantic search engine with AI superpowers that helps you find the information you need, in a fast and easy way.
+        </p>
+        <p>
+            To get more superpowers, enable <b> AI-based chapters </b> and let PACE automatically search for the most important parts of the podcast. Even more, you can enjoy the magic of AI by letting PACE <b>automatically generate chapter artworks</b> for each podcast episode.
+        </p>
+
+        <p>It is a project created for the <a href="https://hackathon.assemblyai.com/">AssemblyAI 50K Hackathon - Winter 2022</a>.</p>
+
+        <br>
+
+        <h4>🔎 How does it work?</h4>
+
+        <p>Podcasts usually are long-form audio content. They could contain many interesting topics, but you may be interested in only one or some of them.</p>
+
+        <p>
+            <b>PACE</b> got you covered!
+            <ol>
+                <li>
+                    <b>🔈 Speech Processing</b>: generate chapters from audio tracks
+                </li>
+                <li>
+                    <b>📃 NLP:</b> search for episodes or chapters using natural language
+                </li>
+                <li>
+                    <b>🎨 Computer Vision:</b> generate artwork for chapters using text-to-image models
+                </li>
+                <li>
+                    <b>💻 Web:</b> Flask + Elasticsearch to build a web app
+                </li>
+            </ol>
+        </p>
+
+        <br>
+
+        <h4>🚨 Disclaimer</h4>
+
+        <p>
+            Given the limited time of the hackathon, we had to use limited resources for the project.
+            <ul>
+                <li>
+                    <b>📰 News-related podcasts only</b>: we crawled episodes from more than 23K podcast series. However, it was simply not feasible to index all these episodes in the time we had. We focused on news-related episodes (~1500 podcast series reaching a total of ~350K episodes).
+                </li>
+                <li>
+                    <b>✨ Auto-chapters only for a few podcast series</b>:
+                    Chapter detection is based on amazing APIs offered by <a href="https://www.assemblyai.com/">AssemblyAI</a>. However, we had to limit the number of requests we could make to the API. Therefore, we focus on 2 podcast series (<a href="https://the-daily-good.com/podcast/">The Daily Good</a> and <a href="https://crosspolitic.com/series/daily-news-brief/">Daily News Brief</a>). The total number of episodes with chapter-level semantic information is ~300 (~2500 chapters).
+                </li>
+                <li>
+                    <b>⚫ Cohere-backed chapter search:</b> superpowers are powered by <a href="https://www.cohere.ai/">Cohere</a> and <a href="https://assemblyai.com">AssemblyAI</a>. Chapter are captioned using AssemblyAI and embedded using the Cohere's Language Models. For episodes semantic search, PACE uses <a href="https://sbert.net">sentence-transformers</a> and state-of-the-art open source models.
+                </li>
+                <li>
+                    <b>🖼️ Stable Diffusion artwork generation:</b> text-to-image AI models have reached impressive results. Using <code>CompVis/stable-diffusion-v1-4</code> available on the <a href="https://huggingface.co/CompVis/stable-diffusion-v1-4">HuggingFace model hub</a>, we generate chapter artworks using the chapter description in natural language.
+                </li>
+                <li>
+                    <b>🇬🇧 English-only search:</b> we focused on English podcasts. However, we aim to support other languages in the future 🌍.
+                </li>
+
+            </ul>
+        </p>
+
+
+        <br>
+        <h4>🧱 About the project</h4>
+        <p>PACE is a project created by 
+            <a href="https://koudounasalkis.github.io/">Alkis Koudounas</a>
+            <a href="https://twitter.com/VaianiLorenzo">Lorenzo Vaiani</a>
+            <a href="https://mlaquatra.me">Moreno La Quatra</a>.
+            It has been created in <b>48 hours</b> for the <a href="https://hackathon.assemblyai.com/">AssemblyAI 50K Hackathon - Winter 2022</a>.
+        </p>
+
+        <br>
+        <br>
+
+        <!-- create audio container for Speech Recognition 
+        <div id="audio-div" style="display: none;">
+            <audio id="audio-container" controls></audio>
+        </div>-->
+
+
 
     </div>
-    </div>
-    -->
+
+    <script>
+        /* 
+        var ua = window.navigator.userAgent;
+        var iOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i);
+        // var webkit = !!ua.match(/WebKit/i);
+        // var iOSSafari = iOS && webkit && !ua.match(/CriOS/i);
+    
+        if (iOS) { mimeType = 'audio/mp4'; } else { mimeType = 'audio/webm'; }
+    
+        // mimeType = 'audio/webm';
+        // if (!MediaRecorder.isTypeSupported) {
+        //     mimeType = 'audio/mp4';
+        // }
+
+        is_recording = false;
+        function speech2text() {
+            // prevent form submission
+            event.preventDefault();
+            if (is_recording) {
+                stopRecording();
+                // change button color to white again 
+                document.getElementById("stt-button").style.backgroundColor = "white";
+                is_recording = false;
+                // use API to convert audio to text 
+            } else {
+                startRecording();
+                // change button color to flashing light red 
+                document.getElementById("stt-button").style.backgroundColor = "#ff8888";
+                is_recording = true;
+            }
+        }
+    
+        
+    
+        navigator
+            .mediaDevices
+            .getUserMedia({
+                audio: true
+            })
+            .then(stream => {
+                handlerFunction(stream)
+            });
+    
+        function handlerFunction(stream) {
+    
+            var options = {
+                mimeType: mimeType
+                // type: 'audio/webm;codecs=pcm'
+            }
+    
+    
+            rec = new MediaRecorder(stream, options);
+            // let rec = RecordRTC(stream, options);
+    
+            rec.ondataavailable = e => {
+                audioChunks.push(e.data);
+    
+                if (rec.state == "inactive") {
+    
+                    let blob = new Blob(audioChunks, {
+                        type: mimeType
+                        // type: 'audio/webm'
+                    });
+                    
+                    var url = URL.createObjectURL(blob);
+    
+                    var div = document.getElementById('audio-div');
+    
+                    if (document.contains(document.getElementById("audio-container"))) {
+                        document.getElementById("audio-container").remove();
+                    }
+    
+                    var container = document.createElement('audio');
+                    container.setAttribute("id", "audio-container")
+                    container.setAttribute("name", "recording")
+                    container.controls = true
+    
+                    var source = document.createElement('source');
+                    div.appendChild(container)
+                    container.appendChild(source);
+    
+                    source.setAttribute('src', url);
+                    source.setAttribute('type', 'audio/mpeg');
+                    container.setAttribute("preload", "metadata")
+    
+                    console.log({
+                        src: source.getAttribute('src'),
+                        type: source.getAttribute('type'),
+                    });
+                }
+            }
+        }
+    
+        function sendData() {
+            sendDataButton.disabled = true;
+    
+            let blob = new Blob(audioChunks, {
+                type: 'audio/webm'
+            });
+    
+            var audio = document.getElementById("audio-container");
+    
+            JsLoadingOverlay.show({
+                'overlayBackgroundColor': '#666666',
+                'overlayOpacity': 0.6,
+                'spinnerIcon': 'ball-atom',
+                'spinnerColor': '#000',
+                'spinnerSize': '2x',
+                'overlayIDName': 'overlay',
+                'spinnerIDName': 'spinner',
+                'spinnerZIndex':99999,
+                'overlayZIndex':99998
+              });
+    
+            console.log(blob)
+        }
+    
+        function startRecording() {
+            console.log('Recording is started..');
+            audioChunks = [];
+            rec.start();
+            // rec.startRecording();
+        };
+    
+        function stopRecording() {
+            console.log("Recording is stopped.");
+            rec.stop();
+            // rec.stopRecording();
+        };
+    
+        function cancelAudio() {
+            element = document.getElementById("audio-container");
+            element.parentNode.removeChild(element);
+            startRecording.disabled = false;
+            stopRecording.disabled = true;
+            audioChunks = [];
+    
+        }
+        */
+
+            
+    </script>
+
+    
+
+
 </body>
 
 </html>

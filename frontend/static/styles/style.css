@@ -25,24 +25,40 @@ main > .container {
 
 /* search button with modern design */
 .search-button {
-  background-color: #4CAF50; /* Green */
-  border: none;
+  background-color: #FFF; /* White */
+  border: 1px solid #42C2FF;
   color: white;
-  padding: 15px 32px;
+  padding: 10px 15px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 16px;
+  font-size: 25px;
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 12px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
+/* search button when hovered */
+.search-button:hover {
+  background-color: #E7F0FE;
+  border: 1px solid #42C2FF;
+}
+
+/* search button when clicked or focused */
+.search-button:active, .search-button:focus {
+  background-color: #22A2DF;
+  border: 1px solid #42C2FF;
+}
+
+
 /* search bar with modern design and a little bit of shadow - also focused */
-.search-bar, .search-bar:focus {
+.search-bar, .search-bar:focus, .search-bar:active {
   border-radius: 12px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin: 4px 2px;
+  border: 1px solid #42C2FF;
+  background-color: #FFF;
 }
 
 /* Logo text with modern clear and elegant font - with a little bit of shadow */
@@ -92,9 +108,9 @@ body {
   height: 10%; 
   background-color: #FFF; 
   text-align: center; 
-  border-top: 1px solid #000;
+  border-top: 1px solid #e5e5e5;
   min-height: 200px;
-  box-shadow: 0px -2px 5px 0px rgba(0,0,0,0.75);
+  box-shadow: 0px -1px 20px 0px rgba(0,0,0,0.75);
 }
 
 /* for mobile */
@@ -110,7 +126,7 @@ body {
     text-align: center; 
     border-top: 1px solid #e5e5e5;
     /* a little bit of shadow to the top */
-    box-shadow: 0px -1px 10px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px -1px 20px 0px rgba(0,0,0,0.75);
   }
 }
 

@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
     <script src="https://cdn.plyr.io/3.7.3/plyr.js"></script>
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.3/plyr.css" />
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 
     <title>Results</title>
 
@@ -22,28 +23,28 @@
     
     <br><br>
     <div class="container" style="margin-top: auto; margin-bottom: auto; padding-bottom: 15%"">
-        <h1 align="center">
-
-            <a href="/" class="logo-text" style="text-decoration:none; color: #000;">PodMagic</a>
-            
-        </h1>
-        <p align="center">Podcast search, with superpowers.</p>
+        <h1 align="center"><a class="logo-text" href="/" style="text-decoration:none; color: #000;">PACE</a></h1>
+        <p align="center"><b>P</b>odcast <b>A</b>I for <b>C</b>hapters and <b>E</b>pisodes<p>
         <br>
-        <center>
-            <form class="" action="/search/results" method="post">
-                <div class="d-flex">
-                    <input class="form-control me-2 search-bar" type="search" placeholder="Search" aria-label="Search" name="input" autofocus>
-                    <button class="btn btn-outline-success search-button" type="submit">Search</button>
+        <form action="/search/results" method="post">
+            <div class="d-flex">
+                <input class="form-control me-2 search-bar" type="search" placeholder="Search for your favourite topic..." aria-label="Search" name="input" autofocus>
+                <button class="btn btn-outline-success search-button" type="submit">🔍</button>
+            </div>
+            <br>
+            <div class="form-check form-switch" style="margin-top: -10px; margin-left: -30px;">
+                <div class="form-check form-switch align-self-md-center">
+                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" name="magic">
+                    <label class="form-check-label" for="flexSwitchCheckDefault"> Inside podcast search </label>
                 </div>
-                <br>
-                <div class="form-check form-switch">
-                    <label class="form-check-label" for="flexSwitchCheckDefault">🚀 Magic</label>
-                    <br>
-                    <input class="checkbox" type="checkbox" id="flexSwitchCheckDefault" name="magic">
-                </div>
-
-            </form>
-        </center>
+                <!-- make the checkbox checked if magic is true -->
+                {% if is_magic %}
+                    <script>
+                        document.getElementById("flexSwitchCheckDefault").checked = true;
+                    </script>
+                {% endif %}
+            </div>
+        </form>
 
         <br>
         <center>
@@ -59,18 +60,17 @@
                 {% for hit in res['hits']['hits'] %}
 
                 {% set url_audio = hit['_source']['audio_url'] %}
-                {% set episode_title = hit['_source']['episode_title'] %}
+                {% set episode_title = hit['_source']['episode_title'][:20] + "..." %}
                 {% set start_time = hit['_source']['start'] %}
-                <!-- convert start_time in milliseconds to HH:MM:SS -->
                 {% set start_timestamp = start_time|ctime %}
-                <!-- add leading 0 to seconds  and leave minutes as is (there can be even minutes > 10) - use split "-" -->
+                {% set end_time = hit['_source']['end'] %}
+                {% set end_timestamp = end_time|ctime %}
 
                 {% set chapter_gist = hit['_source']['chapter_gist'] %}
                 {% set chapter_summary = hit['_source']['chapter_summary'] %}
                 {% set episode_pub_date = " ".join(hit['_source']['episode_pub_date'].split()[:4]) %}
                 {% set player_text = "Listen to " + episode_title.replace("'", "&#39;").replace('"', '&quot') + " - " + chapter_gist.replace("'", "&#39;").replace('"', '&quot') %}
-                {% set generated_artwork = "images/"+chapter_gist.replace(" ", "_")+"/chapter.gif" %}
-                {% set placeholder = "" %}
+                {% set generated_artwork = "images/"+chapter_gist.replace(" ", "_") + "/" + 1|random_artwork %}
                 
 
                 <div class="card mb-3" style="max-width: 100%;">
@@ -80,8 +80,9 @@
                         </div>
                         <div class="col-md-10">
                         <div class="card-body">
-                            <h5 class="card-title">{{ episode_title }}</h5>
-                            <p class="card-text">{{start_timestamp}} <b>{{ chapter_gist }}</b>: {{ hit['highlight']['chapter_summary'][0][:200] if 'chapter_summary' in hit['highlight'] else hit['_source']['chapter_summary'][:200] |safe }}...</p>
+                            <h5 class="card-title"><b>{{ chapter_gist }}</b></h5>
+                            <p class="card-text"><small class="text-muted"><b>{{episode_title}}</b> - Relevant chapter from {{start_timestamp}} to {{end_timestamp}}</small></p>
+                            <p class="card-text">{{ hit['highlight']['chapter_summary'][0][:200] if 'chapter_summary' in hit['highlight'] else hit['_source']['chapter_summary'][:200] |safe }}...</p>
                             <p class="card-text"><small class="text-muted">{{ episode_pub_date }}</small></p>
                             <button onclick="update_url_source_chapter('{{ url_audio }}', '{{ player_text }}', {{ start_time }})" class="btn btn-primary">Listen</button>
                             
@@ -99,7 +100,8 @@
                 {% set url_audio = hit['_source']['episode_audio_link'] %}
                 {% set podcast_title = hit['_source']['episode_title'].replace("'", "&#39;").replace('"', '&quot') %}
                 {% set podcast_date = " ".join(hit['_source']['episode_pub_date'].split()[:4]) %}
-                
+                {% set duration = hit['_source']['episode_duration']|uniform_duration %}
+                {% set episode_description_clean = hit['_source']['episode_description_clean']|truncate_if_longer_than %} 
 
                 <div class="card mb-3" style="max-width: 100%;">
                     <div class="row g-0 vertical-center">
@@ -108,8 +110,9 @@
                         </div>
                         <div class="col-md-10">
                         <div class="card-body">
-                            <h5 class="card-title">{{ hit['_source']['episode_title'] }}</h5>
-                            <p class="card-text">{{hit['_source']['episode_description_clean'][:200] |safe }}...</p>
+                            <h5 class="card-title"><b>{{ hit['_source']['episode_title'] }}</b></h5>
+                            <p class="card-text"><small class="text-muted">{{ duration }}</small></p>
+                            <p class="card-text">{{episode_description_clean |safe }}</p>
                             <p class="card-text"><small class="text-muted">{{ podcast_date }}</small></p>
                             <button onclick="update_url_source('{{ url_audio }}', '{{ podcast_title }}')" class="btn btn-primary">Listen</button>
                             
