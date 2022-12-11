@@ -18,16 +18,18 @@ num_images = 3
 
 ## Generate images for each chapter title
 for title in tqdm(chapter_titles):
+
     print(title)
     prompt = [title] * num_images
     title_path = title.replace(" ", "_")
-    # check for images that have already been generated
-    if os.path.exists(f"images/{title_path}") and len(os.listdir(f"images/{title_path}")) == num_images:
+
+    ## Check for images that have already been generated
+    if os.path.exists(f"images/{title_path}") and len(os.listdir(f"images/{title_path}")) == num_images + 1:
         continue
     else: 
         os.makedirs(f"images/{title_path}") 
     
     images = pipe(prompt).images
+
     for i,image in enumerate(images):
         image.save(f"images/{title_path}/{i}.png")
-
