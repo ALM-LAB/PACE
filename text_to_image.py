@@ -24,7 +24,8 @@ for title in tqdm(chapter_titles):
     title_path = title.replace(" ", "_")
 
     ## Check for images that have already been generated
-    if os.path.exists(f"images/{title_path}") and len(os.listdir(f"images/{title_path}")) == num_images + 1:
+    if os.path.exists(f"images/{title_path}") and (len(os.listdir(f"images/{title_path}")) == num_images + 1 \
+        or len(os.listdir(f"images/{title_path}")) == num_images):
         continue
     else: 
         os.makedirs(f"images/{title_path}") 
