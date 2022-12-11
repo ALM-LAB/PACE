@@ -42,8 +42,10 @@ Podcasts usually are long-form audio content. They could contain many interestin
 
 ---
 
-## 📺 Demo
-[![Watch the video](readme_images/video.png)](https://youtu.be/1Z7Z8Z8Z8Z8)
+## 📺 Demo & Slides
+[![Watch the video](readme_images/video.png)](https://youtu.be/1Z7Z8Z8Z8Z8)  
+
+Find the slides of our project [here](readme_images/PACE_Slides.pptx).
 
 ---
 
@@ -110,9 +112,10 @@ We finally leverage [stable diffusion models](https://huggingface.co/CompVis/sta
 
 **🕛 PHASE 4**
 
-15. [ ] Add a "search by voice" button to the web app
-16. [ ] Add "Fake News" detection to the web app
-16. [ ] Slides & Demo 
+15. [x] Slides & Demo 
+16. [ ] Add a "search by voice" button to the web app -- Future Work
+17. [ ] Add "Fake News" detection to the web app - Future Work
+
 
 **END OF PHASE 4**
 
@@ -131,3 +134,6 @@ We finally leverage [stable diffusion models](https://huggingface.co/CompVis/sta
 ## 🤌🏻 About the project 
 PACE is a project created by [Alkis Koudounas](https://koudounasalkis.github.io), [Lorenzo Vaiani](https://twitter.com/VaianiLorenzo), and [Moreno La Quatra](https://www.mlaquatra.me). It is part of the ***AssemblyAI 50K Hackathon - Winter 2022***.
 
+<p align="center">
+  <img src="readme_images/ALM.png" alt="logo" width="300"/>
+</p>
