@@ -15,9 +15,7 @@
 
 
 ## 🎯 Our IDEA
-How many times have you been listening to a podcast and you wanted to go back to a specific part, but you don't remember the exact time?
-
-We have all been there. Now we got you covered!
+How many times have you been listening to a podcast and you wanted to go back to a specific part, but you don't remember the exact time? We have all been there. Now we got you covered!
 
 We present **PACE, Podcast AI for Chapters and Episodes**, which allows you to search for podcasts at your own *pace*.  
 PACE is a ***semantic search engine*** that helps you find the information you need, in a fast and easy way.
@@ -92,7 +90,7 @@ We finally leverage [stable diffusion models](https://huggingface.co/CompVis/sta
     - [x] Implement search bar
     - [x] Implement search results
     - [x] Implement player
-    - [ ] Implement intra-podcast search
+    - [x] Implement intra-podcast search
     
 **END OF PHASE 2**
 
@@ -103,7 +101,7 @@ We finally leverage [stable diffusion models](https://huggingface.co/CompVis/sta
 11. [x] Generative models (generate gifs for chapters)
 12. [x] Implement storage mechanism for images/gifs 
 13. [x] Implement image/gif retrieval in web app
-14. [ ] **TEST: Test the overall correct behavior of the web app, in all its parts**
+14. [x] **TEST: Test the overall correct behavior of the web app, in all its parts**
 
 **END OF PHASE 3**
 
@@ -111,7 +109,8 @@ We finally leverage [stable diffusion models](https://huggingface.co/CompVis/sta
 
 **🕛 PHASE 4**
 
-15. [ ] Add ASR (Whisper) to the pipeline, to allow for search directly by recording a query
+15. [ ] Add a "search by voice" button to the web app
+16. [ ] Add "Fake News" detection to the web app
 16. [ ] Slides & Demo 
 
 **END OF PHASE 4**
