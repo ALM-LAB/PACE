@@ -10,7 +10,7 @@
 
 - [🎯 Our IDEA](#-our-idea)
 - [🔎 How does it work?](#-how-does-it-work)
-- [📺 Demo](#-demo)
+- [📺 Demo](#-demo--slides)
 - [⏳ Pipeline](#-pipeline)
 - [🙏🏻 Acknowledgements](#-acknowledgements)
 - [🤌🏻 About the project](#-about-the-project)
@@ -45,7 +45,7 @@ Podcasts usually are long-form audio content. They could contain many interestin
 ---
 
 ## 📺 Demo & Slides
-[![Watch the video](readme_images/video.png)](https://youtu.be/1Z7Z8Z8Z8Z8)  
+[![Watch the video](readme_images/cover.png)](https://www.youtube.com/watch?v=yZu-fikJ0s0)  
 
 Find the slides of our project [here](readme_images/PACE_Slides.pptx).
 
