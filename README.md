@@ -1,7 +1,7 @@
 # 🎧 PACE: Podcast AI for Chapters and Episodes
 
 <p align="center">
-  <img src="readme_images/pace_horizontal_orange.png" alt="logo" width="300">
+  <img src="readme_images/pace_horizontal_orange.png" alt="logo" width="400">
 </p>
 
 **DEMO**: Try it out for limited time on our [demo page](http://130.192.163.139:9000/).
