@@ -121,9 +121,9 @@ We finally leverage [stable diffusion models](https://huggingface.co/CompVis/sta
 
 - [AssemblyAI](https://www.assemblyai.com/) for the outstanding experience (and the free credits)
 - [Cohere](www.cohere.ai) for the amazing API
-- [plyr.io](https://github.com/sampotts/plyr) for the media player design
-- [Huggingface](https://huggingface.co/) for the amazing models
-- ☕️ ☕️ ☕️ for the energy
+- 🎬 [plyr.io](https://github.com/sampotts/plyr) for the media player design
+- 🤗 [Huggingface](https://huggingface.co/) for the amazing models
+- ☕️ ☕️ 🧃 for the energy
 
 ---
 
