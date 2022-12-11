@@ -1,14 +1,20 @@
 # PodMAGIC
 
-A Project by ***ALM LAB (Audio, Language and Multimedia Lab)***
+A Project by ***ALM LAB (Audio, Language and Multimedia Lab)***.
 
 
 ## Pipeline
 This is the pipeline of our project. 
 
-We are using [AssemblyAI](https://www.assemblyai.com/) to transcribe podcasts and retrieve chapters inside episodes, and [Elasticsearch](https://www.elastic.co/) to index specific episodes and chapters.
+We ingest podcast rss feeds, and we enrich the dataframe with episodes and related metadata. We then filter episodes' description using [BERT Podcast Classifier](https://huggingface.co/morenolq/spotify-podcast-advertising-classification).
 
-We finally leverage diffusion models to create an image/gif for each chapter.
+We encode episodes' description using [sentence BERT](https://sbert.net/docs/pretrained_models.html), and we index them in [Elasticsearch](https://www.elastic.co/).
+
+We then select a bunch of podcasts for intra-podcast search, and we use [AssemblyAI](https://www.assemblyai.com/) to transcribe podcasts and retrieve chapters inside episodes. We index episodes' chapters in elasticsearch, using [cohere](www.cohere.ai) to embed the chapters.
+
+We finally leverage [stable diffusion models](https://huggingface.co/CompVis/stable-diffusion-v1-4) to create an image/gif for each of the generated chapter.
+
+
 
 ---
 
@@ -51,14 +57,23 @@ We finally leverage diffusion models to create an image/gif for each chapter.
 
 **PHASE 3**
 
-11. [ ] Generative models (generate gifs for chapters)
-12. [ ] Implement storage mechanism for images/gifs 
-13. [ ] Implement image/gif retrieval in web app
+11. [x] Generative models (generate gifs for chapters)
+12. [x] Implement storage mechanism for images/gifs 
+13. [x] Implement image/gif retrieval in web app
+14. [ ] **TEST: Test the overall correct behavior of the web app, in all its parts**
 
 **END OF PHASE 3**
 
  ---
 
+**PHASE 4**
+
+15. [ ] Add ASR (Whisper) to the pipeline, to allow for search directly by recording a query
+16. [ ] Slides & Demo 
+
+**END OF PHASE 4**
+
+---
 ## Acknowledgements
 
 - plyr.io https://github.com/sampotts/plyr
