@@ -12,3 +12,6 @@ spacy
 sentence-transformers
 flask
 cohere
+diffusers==0.10.0
+scipy 
+accelerate
