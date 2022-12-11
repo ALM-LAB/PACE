@@ -13,6 +13,7 @@
 - [🙏🏻 Acknowledgements](#-acknowledgements)
 - [🤌🏻 About the project](#-about-the-project)
 
+---
 
 ## 🎯 Our IDEA
 How many times have you been listening to a podcast and you wanted to go back to a specific part, but you don't remember the exact time? We have all been there. Now we got you covered!
@@ -128,5 +129,5 @@ We finally leverage [stable diffusion models](https://huggingface.co/CompVis/sta
 ---
 
 ## 🤌🏻 About the project 
-PACE is a project created by Alkis Koudounas, Lorenzo Vaiani, and Moreno La Quatra. It is part of the ***AssemblyAI 50K Hackathon - Winter 2022***.
+PACE is a project created by [Alkis Koudounas](https://koudounasalkis.github.io), [Lorenzo Vaiani](https://twitter.com/VaianiLorenzo), and [Moreno La Quatra](https://www.mlaquatra.me). It is part of the ***AssemblyAI 50K Hackathon - Winter 2022***.
 
